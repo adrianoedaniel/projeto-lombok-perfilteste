@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projetojpa.entities.Usuario;
 import com.projetojpa.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Usuarios", description = "API REST DE GERENCIAMENTO DE USUÁRIOS")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -31,6 +34,7 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(summary = "Localiza usuário por ID")
 	public ResponseEntity<Usuario> buscaUsuarioControlId(@PathVariable Long id){
 		Usuario usuario  = usuarioService.buscaUsuarioId(id);
 		if(usuario != null) {
@@ -42,18 +46,21 @@ public class UsuarioController {
 
 	}
 	@GetMapping("/")
+	@Operation(summary = "Apresenta todos os usuários ")
 	public ResponseEntity<List<Usuario>> buscaTodosUsuariosControl(){
 		List<Usuario> Usuarios = usuarioService.buscaTodosUsuarios();
 		return ResponseEntity.ok(Usuarios);
 	}
 
 	@PostMapping("/")
+	@Operation(summary = "Cadastra um usuário")
 	public ResponseEntity<Usuario> salvaUsuariosControl(@RequestBody @Valid Usuario usuario){
 		Usuario salvaUsuario = usuarioService.salvaUsuario(usuario);
 		return ResponseEntity.status(HttpStatus.CREATED).body(salvaUsuario);
 	}
 	
 	@PutMapping("/{id}")
+	@Operation(summary = "Altera um usuário")
 	public ResponseEntity<Usuario> alteraUsuarioControl(@PathVariable Long id, @RequestBody @Valid Usuario usuario){
 		Usuario alteraUsuario = usuarioService.alterarUsuario(id, usuario);
 		if(alteraUsuario != null) {
@@ -65,6 +72,7 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Exclui um usuário")
 	public ResponseEntity<Usuario> apagaUsuarioControl(@PathVariable Long id){
 		boolean apagar = usuarioService.apagarUsuario(id);
 		if (apagar) {
@@ -75,6 +83,8 @@ public class UsuarioController {
 		}
 	}
 }
+
+
 
 
 
